@@ -1,37 +1,78 @@
 import React from "react";
-import { X } from "lucide-react";
+import { X, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 
 export default function ProcessItem({ process, onKill }) {
-	const { id, name, category, icon, ramUsage, cpuUsage, isRunning } = process;
+  const isHeavy = process.cpuUsage > 15 || process.ramUsage > 150;
 
-	return (
-		<div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-4 flex items-center gap-4">
-			<div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-lg">
-				{icon}
-			</div>
-			<div className="flex-1">
-				<div className="flex items-center gap-2">
-					<div className="text-white font-medium">{name}</div>
-					<div className="text-xs text-gray-500">{category}</div>
-				</div>
-				<div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-					<div className="text-gray-400">CPU: <span className="text-pink-400 font-medium">{cpuUsage.toFixed(1)}%</span></div>
-					<div className="text-gray-400">RAM: <span className="text-blue-400 font-medium">{ramUsage.toFixed(0)} MB</span></div>
-					<div className="hidden md:block text-gray-400">Status: <span className={isRunning ? "text-green-400" : "text-gray-500"}>{isRunning ? "Em execução" : "Encerrado"}</span></div>
-				</div>
-				<div className="h-2 bg-white/10 rounded-full overflow-hidden mt-3">
-					<div className="h-full bg-gradient-to-r from-pink-500 to-purple-500" style={{ width: `${Math.max(0, Math.min(100, cpuUsage))}%` }} />
-				</div>
-			</div>
-			<button
-				onClick={() => onKill(id)}
-				disabled={!isRunning}
-				className="px-3 py-2 rounded-xl bg-red-600/80 hover:bg-red-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
-			>
-				<X className="w-4 h-4" />
-			</button>
-		</div>
-	);
+  return (
+    <div className={`bg-black/40 backdrop-blur-xl border ${
+      isHeavy ? 'border-red-500/30' : 'border-white/10'
+    } rounded-2xl p-4 transition-all ${!process.isRunning && 'opacity-50'}`}>
+      <div className="flex items-start gap-4">
+        <div className="text-4xl">{process.icon}</div>
+        
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <div>
+              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                {process.name}
+                {isHeavy && process.isRunning && (
+                  <AlertCircle className="w-4 h-4 text-red-500" />
+                )}
+              </h3>
+              <p className="text-sm text-gray-400">{process.category}</p>
+            </div>
+            
+            {process.isRunning && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onKill(process.id)}
+                className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
+
+          {process.isRunning && (
+            <>
+              <div className="grid grid-cols-2 gap-4 mb-2">
+                <div>
+                  <div className="flex justify-between text-xs text-gray-400 mb-1">
+                    <span>CPU</span>
+                    <span className={isHeavy && process.cpuUsage > 15 ? 'text-red-400' : ''}>
+                      {process.cpuUsage.toFixed(1)}%
+                    </span>
+                  </div>
+                  <Progress value={process.cpuUsage} className="h-1" />
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs text-gray-400 mb-1">
+                    <span>RAM</span>
+                    <span className={isHeavy && process.ramUsage > 150 ? 'text-red-400' : ''}>
+                      {process.ramUsage.toFixed(0)} MB
+                    </span>
+                  </div>
+                  <Progress value={(process.ramUsage / 300) * 100} className="h-1" />
+                </div>
+              </div>
+
+              {isHeavy && (
+                <div className="text-xs text-red-400 bg-red-500/10 px-2 py-1 rounded">
+                  Este app está consumindo muitos recursos
+                </div>
+              )}
+            </>
+          )}
+
+          {!process.isRunning && (
+            <div className="text-sm text-gray-500">Processo encerrado</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
-
-

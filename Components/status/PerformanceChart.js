@@ -1,67 +1,50 @@
 import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Activity } from "lucide-react";
 
-export default function PerformanceChart({ data = [] }) {
-	if (!Array.isArray(data) || data.length === 0) {
-		return (
-			<div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 text-sm text-gray-400">
-				Sem dados suficientes para o gráfico.
-			</div>
-		);
-	}
-
-	const maxValue = Math.max(
-		...data.map((d) => Math.max(d.cpu ?? 0, d.memory ?? 0))
-	);
-	const safeMax = Math.max(100, Math.ceil(maxValue / 10) * 10);
-
-	return (
-		<div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
-			<div className="text-sm text-gray-400 mb-3">Histórico de Performance (CPU vs RAM)</div>
-			<div className="relative h-40 w-full">
-				{/* grid */}
-				<div className="absolute inset-0 grid grid-rows-4">
-					{[0, 1, 2, 3].map((i) => (
-						<div key={i} className="border-t border-white/10" />
-					))}
-				</div>
-
-				{/* lines */}
-				<svg className="relative w-full h-full" preserveAspectRatio="none">
-					{["cpu", "memory"].map((key, idx) => {
-						const pathD = data
-							.map((point, i) => {
-								const x = (i / Math.max(1, data.length - 1)) * 100;
-								const y = 100 - ((point[key] ?? 0) / safeMax) * 100;
-								return `${i === 0 ? "M" : "L"}${x},${y}`;
-							})
-							.join(" ");
-						return (
-							<path
-								key={key}
-								d={pathD}
-								fill="none"
-								stroke={idx === 0 ? "#ec4899" : "#60a5fa"}
-								strokeWidth="2"
-								vectorEffect="non-scaling-stroke"
-							/>
-						);
-					})}
-				</svg>
-			</div>
-
-			<div className="flex items-center gap-4 text-xs text-gray-400 mt-3">
-				<div className="flex items-center gap-2">
-					<span className="w-3 h-3 rounded-full bg-pink-500" />
-					CPU
-				</div>
-				<div className="flex items-center gap-2">
-					<span className="w-3 h-3 rounded-full bg-blue-400" />
-					RAM
-				</div>
-				<div className="ml-auto text-gray-500">máx: {safeMax}%</div>
-			</div>
-		</div>
-	);
+export default function PerformanceChart({ data }) {
+  return (
+    <Card className="bg-black/40 backdrop-blur-xl border-white/10">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+          <Activity className="w-5 h-5 text-pink-500" />
+          Histórico de Performance
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
+            <XAxis dataKey="time" stroke="#9ca3af" style={{ fontSize: '12px' }} />
+            <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#000000aa',
+                border: '1px solid #ffffff20',
+                borderRadius: '8px'
+              }}
+            />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="cpu"
+              stroke="#ec4899"
+              strokeWidth={2}
+              name="CPU %"
+              dot={false}
+            />
+            <Line
+              type="monotone"
+              dataKey="memory"
+              stroke="#8b5cf6"
+              strokeWidth={2}
+              name="RAM %"
+              dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  );
 }
-
-
