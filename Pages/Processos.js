@@ -1,9 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import ProcessItem from "../components/processos/ProcessItem";
+import ProcessItem from "../Components/processos/ProcessItem.js";
 
 const generateMockProcesses = () => {
   const apps = [
@@ -93,7 +91,7 @@ export default function Processos() {
       <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <Input
+          <input
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar aplicativo..."
@@ -102,36 +100,33 @@ export default function Processos() {
         </div>
         
         <div className="flex gap-2">
-          <Button
-            variant={sortBy === "cpu" ? "secondary" : "ghost"}
+          <button
             onClick={() => setSortBy("cpu")}
-            className="text-white bg-white/5 hover:bg-white/10"
+            className={`text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl ${sortBy === "cpu" ? "ring-1 ring-white/20" : ""}`}
           >
             CPU
-          </Button>
-          <Button
-            variant={sortBy === "ram" ? "secondary" : "ghost"}
+          </button>
+          <button
             onClick={() => setSortBy("ram")}
-            className="text-white bg-white/5 hover:bg-white/10"
+            className={`text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl ${sortBy === "ram" ? "ring-1 ring-white/20" : ""}`}
           >
             RAM
-          </Button>
-          <Button
-            variant={sortBy === "name" ? "secondary" : "ghost"}
+          </button>
+          <button
             onClick={() => setSortBy("name")}
-            className="text-white bg-white/5 hover:bg-white/10"
+            className={`text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl ${sortBy === "name" ? "ring-1 ring-white/20" : ""}`}
           >
             Nome
-          </Button>
+          </button>
         </div>
 
-        <Button
+        <button
           onClick={handleKillAll}
-          className="bg-red-600/80 hover:bg-red-600 text-white rounded-xl"
+          className="bg-red-600/80 hover:bg-red-600 text-white rounded-xl px-4"
         >
           <X className="w-4 h-4 mr-2" />
           Fechar Todos
-        </Button>
+        </button>
       </div>
 
       <div className="space-y-3">

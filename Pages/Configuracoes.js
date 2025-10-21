@@ -1,11 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
-import { Bell, Shield, Palette, Zap, Moon, Sun } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Bell, Shield, Palette, Zap } from "lucide-react";
 
 export default function Configuracoes() {
   const [user, setUser] = useState(null);
@@ -18,21 +13,12 @@ export default function Configuracoes() {
   });
 
   useEffect(() => {
-    const loadUser = async () => {
-      const currentUser = await base44.auth.me();
-      setUser(currentUser);
-      if (currentUser.settings) {
-        setSettings({ ...settings, ...currentUser.settings });
-      }
-    };
-    loadUser();
+    // sem backend: permanece no estado padrão
   }, []);
 
-  const handleSettingChange = async (key, value) => {
+  const handleSettingChange = (key, value) => {
     const newSettings = { ...settings, [key]: value };
     setSettings(newSettings);
-    
-    await base44.auth.updateMe({ settings: newSettings });
   };
 
   return (
@@ -44,104 +30,114 @@ export default function Configuracoes() {
         <p className="text-gray-400">Personalize o PulseX de acordo com suas preferências</p>
       </div>
 
-      <Card className="bg-black/40 backdrop-blur-xl border-white/10">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+      <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl">
+        <div className="p-6">
+          <div className="text-white flex items-center gap-2">
             <Bell className="w-5 h-5 text-pink-500" />
             Notificações
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </div>
+        </div>
+        <div className="space-y-4 p-6 pt-0">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <Label htmlFor="notifications" className="text-white">Notificações do Sistema</Label>
+              <label htmlFor="notifications" className="text-white">Notificações do Sistema</label>
               <p className="text-sm text-gray-400">Receba alertas sobre otimizações e limpezas</p>
             </div>
-            <Switch
+            <input
               id="notifications"
+              type="checkbox"
               checked={settings.notifications}
-              onCheckedChange={(value) => handleSettingChange("notifications", value)}
+              onChange={(e) => handleSettingChange("notifications", e.target.checked)}
+              className="w-11 h-6 rounded-full appearance-none bg-white/10 checked:bg-pink-500 relative cursor-pointer"
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card className="bg-black/40 backdrop-blur-xl border-white/10">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+      <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl">
+        <div className="p-6">
+          <div className="text-white flex items-center gap-2">
             <Zap className="w-5 h-5 text-purple-500" />
             Otimização Automática
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </div>
+        </div>
+        <div className="space-y-4 p-6 pt-0">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <Label htmlFor="autoOptimize" className="text-white">Otimização Automática</Label>
+              <label htmlFor="autoOptimize" className="text-white">Otimização Automática</label>
               <p className="text-sm text-gray-400">Execute otimização básica diariamente</p>
             </div>
-            <Switch
+            <input
               id="autoOptimize"
+              type="checkbox"
               checked={settings.autoOptimize}
-              onCheckedChange={(value) => handleSettingChange("autoOptimize", value)}
+              onChange={(e) => handleSettingChange("autoOptimize", e.target.checked)}
+              className="w-11 h-6 rounded-full appearance-none bg-white/10 checked:bg-purple-500 relative cursor-pointer"
             />
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <Label htmlFor="batteryOptimization" className="text-white">Otimização de Bateria</Label>
+              <label htmlFor="batteryOptimization" className="text-white">Otimização de Bateria</label>
               <p className="text-sm text-gray-400">Ative economia de energia automática</p>
             </div>
-            <Switch
+            <input
               id="batteryOptimization"
+              type="checkbox"
               checked={settings.batteryOptimization}
-              onCheckedChange={(value) => handleSettingChange("batteryOptimization", value)}
+              onChange={(e) => handleSettingChange("batteryOptimization", e.target.checked)}
+              className="w-11 h-6 rounded-full appearance-none bg-white/10 checked:bg-purple-500 relative cursor-pointer"
             />
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <Label htmlFor="gameModeAuto" className="text-white">Game Mode Automático</Label>
+              <label htmlFor="gameModeAuto" className="text-white">Game Mode Automático</label>
               <p className="text-sm text-gray-400">Ative automaticamente ao detectar jogos</p>
             </div>
-            <Switch
+            <input
               id="gameModeAuto"
+              type="checkbox"
               checked={settings.gameModeAuto}
-              onCheckedChange={(value) => handleSettingChange("gameModeAuto", value)}
+              onChange={(e) => handleSettingChange("gameModeAuto", e.target.checked)}
+              className="w-11 h-6 rounded-full appearance-none bg-white/10 checked:bg-purple-500 relative cursor-pointer"
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card className="bg-black/40 backdrop-blur-xl border-white/10">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+      <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl">
+        <div className="p-6">
+          <div className="text-white flex items-center gap-2">
             <Palette className="w-5 h-5 text-blue-500" />
             Aparência
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </div>
+        </div>
+        <div className="space-y-4 p-6 pt-0">
           <div className="flex items-center justify-between">
             <div className="flex-1">
-              <Label htmlFor="darkMode" className="text-white">Modo Escuro</Label>
+              <label htmlFor="darkMode" className="text-white">Modo Escuro</label>
               <p className="text-sm text-gray-400">Interface otimizada para ambientes com pouca luz</p>
             </div>
-            <Switch
+            <input
               id="darkMode"
+              type="checkbox"
               checked={settings.darkMode}
-              onCheckedChange={(value) => handleSettingChange("darkMode", value)}
+              onChange={(e) => handleSettingChange("darkMode", e.target.checked)}
+              className="w-11 h-6 rounded-full appearance-none bg-white/10 checked:bg-blue-500 relative cursor-pointer"
             />
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card className="bg-black/40 backdrop-blur-xl border-white/10">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+      <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl">
+        <div className="p-6">
+          <div className="text-white flex items-center gap-2">
             <Shield className="w-5 h-5 text-green-500" />
             Sobre
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm text-gray-400">
+          </div>
+        </div>
+        <div className="space-y-3 text-sm text-gray-400 p-6 pt-0">
           <div className="flex justify-between">
             <span>App</span>
             <span className="text-white">PulseX</span>
@@ -154,17 +150,17 @@ export default function Configuracoes() {
             <span>Usuário</span>
             <span className="text-white">{user?.email}</span>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-500/20 rounded-2xl p-6">
         <h3 className="text-lg font-semibold text-white mb-2">Permissões do Sistema</h3>
         <p className="text-sm text-gray-400 mb-4">
           Para funcionamento completo, o PulseX precisa de permissões especiais do Android.
         </p>
-        <Button className="bg-pink-600 hover:bg-pink-700 rounded-xl">
+        <button className="bg-pink-600 hover:bg-pink-700 rounded-xl px-4 py-2 text-white">
           Conceder Permissões
-        </Button>
+        </button>
       </div>
     </div>
   );

@@ -1,8 +1,7 @@
 
 import React, { useState } from "react";
 import { Zap, Gamepad2, Rocket, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import OptimizationCard from "../components/otimizacao/OptimizationCard";
+import OptimizationCard from "../Components/otimizacao/OptimizationCard.js";
 
 export default function Otimizacao() {
   const [optimizing, setOptimizing] = useState(null);

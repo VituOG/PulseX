@@ -1,8 +1,7 @@
 
 import React, { useState } from "react";
 import { Sparkles, Trash2, FolderOpen, ImageIcon, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import CleanupCategory from "../components/limpeza/CleanupCategory";
+import CleanupCategory from "../Components/limpeza/CleanupCategory.js";
 
 export default function PulseX() { // Renamed from Limpeza to PulseX
   const [cleaning, setCleaning] = useState(null);
@@ -77,21 +76,20 @@ export default function PulseX() { // Renamed from Limpeza to PulseX
       </div>
 
       <div className="flex gap-3">
-        <Button
+        <button
           onClick={selectAll}
-          variant="outline"
-          className="flex-1 border-white/10 hover:bg-white/5 text-white rounded-xl"
+          className="flex-1 border border-white/10 hover:bg-white/5 text-white rounded-xl px-4 py-2"
         >
           {Object.values(cleanupData).every(item => item.selected) ? "Desmarcar Tudo" : "Selecionar Tudo"}
-        </Button>
-        <Button
+        </button>
+        <button
           onClick={runCleanup}
           disabled={selectedSize === 0 || cleaning}
-          className="flex-1 bg-gradient-to-r from-pink-600 to-purple-600 hover:opacity-90 rounded-xl"
+          className="flex-1 bg-gradient-to-r from-pink-600 to-purple-600 hover:opacity-90 rounded-xl px-4 py-2 disabled:opacity-50"
         >
           <Trash2 className="w-4 h-4 mr-2" />
           {cleaning ? "Limpando..." : `Limpar ${selectedSize} MB`}
-        </Button>
+        </button>
       </div>
 
       <div className="space-y-3">

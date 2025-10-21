@@ -1,10 +1,8 @@
 
 import React, { useState, useEffect } from "react";
 import { Cpu, Battery, HardDrive, Thermometer, Smartphone, TrendingUp, Activity } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import StatusCard from "../components/status/StatusCard";
-import PerformanceChart from "../components/status/PerformanceChart";
+import StatusCard from "../Components/status/StatusCard.js";
+import PerformanceChart from "../Components/status/PerformanceChart.js";
 
 export default function Status() {
   const [systemStatus, setSystemStatus] = useState({
@@ -119,14 +117,14 @@ export default function Status() {
           progress={systemStatus.cpu}
         />
 
-        <Card className="bg-black/40 backdrop-blur-xl border-white/10">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-400 flex items-center gap-2">
+        <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl">
+          <div className="pb-3 p-6">
+            <div className="text-sm font-medium text-gray-400 flex items-center gap-2">
               <Smartphone className="w-4 h-4" />
               Desempenho Geral
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </div>
+          </div>
+          <div className="p-6 pt-0">
             <div className="flex items-center justify-center h-20">
               <div className="text-center">
                 <div className="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
@@ -135,20 +133,20 @@ export default function Status() {
                 <div className="text-xs text-gray-500 mt-1">Score de Performance</div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       <PerformanceChart data={performanceHistory} />
 
-      <Card className="bg-black/40 backdrop-blur-xl border-white/10">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+      <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl">
+        <div className="p-6">
+          <div className="text-lg font-semibold text-white flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-pink-500" />
             Recomendações de Otimização
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
+          </div>
+        </div>
+        <div className="space-y-3 p-6 pt-0">
           {systemStatus.memory > 70 && (
             <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
               <p className="text-sm text-yellow-400">
@@ -177,8 +175,8 @@ export default function Status() {
               </p>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
